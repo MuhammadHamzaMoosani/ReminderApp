@@ -1,0 +1,48 @@
+<div class="">
+    <div class="flex flex-col md:flex-row items-center justify-between px-8 py-20 md:px-17 ">
+        <div class=" p-5 md:p-0">
+            <h1 class="text-4xl md:text-5xl font-bold text-green-500 mb-4">Reminder App</h1>
+            <h2 class="text-x1 md:text-2xl ">Setup today and get annoying reminders to do your work already.</h2>
+        </div>
+        <div class="md:w-1/2 w-full bg-gray-800 p-8 rounded-2xl shadow-lg "> 
+            <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="space-y-4">
+                <input type="text" placeholder="Name" class="w-full p-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none">
+                <input type="email" placeholder="Email" class="w-full p-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none">
+                <input type="text" placeholder="Number" class="w-full p-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none">
+                <input type="password" placeholder="Password" class="w-full p-3 rounded-xl bg-gray-900 text-white placeholder-gray-500 focus:outline-none">
+                <button class="w-full bg-green-600 rounded-xl p-3 hover:bg-green-700 font-bold">Get Started</button>
+            </form>
+        </div>
+    </div>
+    <div class="px-8 md:px-20 py-16">
+        <h3 class="text-3xl text-center font-bold mb-12 text-green-400" data-aos="fade-up">How it works</h3>
+        <div class="grid md:grid-cols-3 gap-10" data-aos="fade-up">
+            <div class="bg-gray-800 rounded-xl p-6 text-center shadow-md">
+                <img src="assets/whatsApp_logo.png" alt="" class=" align-middle mb-4 mx-auto w-16 h-16">
+
+                <h4 class="text-2xl text-green-500 font-bold mb-2">
+                    Connect WhatsApp
+                </h4>
+                <p class="text-gray-400">Log in once with QR code and stay connected through saved sessions.Done on server using a bot</p>
+            </div>
+            <div class="bg-gray-800 rounded-xl p-6 text-center shadow-md" data-aos="fade-up">
+                <img src="assets/tick.png" alt="" class=" align-middle mb-4 mx-auto w-16 h-16">
+
+                <h4 class="text-2xl text-green-500 font-bold mb-2">
+                    Schedule Tasks
+                </h4>
+                <p class="text-gray-400">Add tasks, due dates, and how often you want to be reminded.
+
+                </p>
+            </div>
+            <div class="bg-gray-800 rounded-xl p-6 text-center shadow-md" data-aos="fade-up">
+                <img src="assets/bell.png" alt="" class=" align-middle mb-4 mx-auto w-16 h-16">
+
+                <h4 class="text-2xl text-green-500 font-bold mb-2">
+                    Get Reminded
+                </h4>
+                <p class="text-gray-400">Get WhatsApp messages that keep you on track — no excuses!</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="p-6 text-white">
+  <h2 class="text-3xl font-bold mb-6 text-green-400">Workspaces</h2>
+
+  <div *ngFor="let ws of workspaces" class="bg-gray-800 p-6 mb-4 rounded-xl shadow-md">
+    <h3 class="text-xl font-bold">{{ ws.name }}</h3>
+    <ul class="ml-4 list-disc text-gray-400">
+      <li *ngFor="let sub of ws.subspaces">{{ sub }}</li>
+    </ul>
+  </div>
+
+  <div class="mt-6">
+    <input type="text" [(ngModel)]="newWorkspace" placeholder="New Workspace"
+      class="p-3 rounded-xl bg-gray-900 text-white mr-2" />
+    <button (click)="addWorkspace()" class="bg-green-600 px-4 py-2 rounded-xl hover:bg-green-700">
+      Add Workspace
+    </button>
+  </div>
+</div>

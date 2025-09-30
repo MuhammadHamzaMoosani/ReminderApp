@@ -1,0 +1,102 @@
+<div class="flex h-screen text-white">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-900 p-6 space-y-4 border-r border-gray-700">
+    <h2 class="text-xl font-bold text-green-400 mb-6">Profile Settings</h2>
+    <button (click)="activeTab='info'" class="block w-full text-left px-4 py-2 rounded hover:bg-gray-800"
+      [class.bg-gray-800]="activeTab==='info'">Information</button>
+    <button (click)="activeTab='reminders'" class="block w-full text-left px-4 py-2 rounded hover:bg-gray-800"
+      [class.bg-gray-800]="activeTab==='reminders'">Reminders</button>
+    <button (click)="activeTab='stats'" class="block w-full text-left px-4 py-2 rounded hover:bg-gray-800"
+      [class.bg-gray-800]="activeTab==='stats'">Stats</button>
+    <button (click)="activeTab='account'" class="block w-full text-left px-4 py-2 rounded hover:bg-gray-800"
+      [class.bg-gray-800]="activeTab==='account'">Account</button>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 p-8 overflow-y-auto">
+    <!-- Information Tab -->
+    <div *ngIf="activeTab==='info'" class="space-y-6">
+      <h3 class="text-2xl font-bold text-green-400 mb-4">Information</h3>
+      <div class="bg-gray-800 p-6 rounded-xl shadow space-y-4">
+        <label class="block">Full Name
+          <input [(ngModel)]="profile.name" class="w-full p-3 mt-1 rounded bg-gray-900 text-white"/>
+        </label>
+        <label class="block">Email
+          <input [(ngModel)]="profile.email" type="email" class="w-full p-3 mt-1 rounded bg-gray-900 text-white"/>
+        </label>
+        <label class="block">Phone
+          <input [(ngModel)]="profile.phone" class="w-full p-3 mt-1 rounded bg-gray-900 text-white"/>
+        </label>
+        <button class="bg-green-600 px-4 py-2 rounded hover:bg-green-700">Save Info</button>
+      </div>
+    </div>
+
+    <!-- Reminders Tab -->
+    <div *ngIf="activeTab==='reminders'">
+      <h3 class="text-2xl font-bold text-green-400 mb-4">Reminders</h3>
+      <div class="bg-gray-800 p-6 rounded-xl shadow space-y-4">
+        <label class="flex items-center gap-2">
+          <input type="checkbox" [(ngModel)]="profile.remindersEnabled" class="w-4 h-4"/>
+          Enable Reminders
+        </label>
+        <label class="block">Reminder Method
+          <select [(ngModel)]="profile.reminder" class="w-full p-3 mt-1 rounded bg-gray-900 text-white">
+            <option value="whatsapp">WhatsApp</option>
+            <option value="email">Email</option>
+          </select>
+        </label>
+      <div class="inline-flex rounded-md shadow-sm" role="group">
+ <label class="relative inline-flex items-center cursor-pointer">
+  <input type="checkbox" class="sr-only peer" [checked]="theme === 'dark'" 
+         (change)="setTheme($event.target.checked ? 'dark' : 'light')" />
+  
+  <!-- Track -->
+  <div
+    class="w-14 h-8 bg-gray-300 rounded-full peer peer-checked:bg-green-600 transition-colors">
+  </div>
+  
+  <!-- Thumb -->
+  <div
+    class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md 
+           transition-transform peer-checked:translate-x-6">
+  </div>
+
+  <!-- Icons / Labels -->
+  <span class="ml-3 text-sm font-medium text-gray-200">
+    {{ theme === 'dark' ? '🌙 Dark' : '☀️ Light' }}
+  </span>
+</label>
+
+</div>
+
+        <button class="bg-green-600 px-4 py-2 rounded hover:bg-green-700">Save Preferences</button>
+      </div>
+    </div>
+
+    <!-- Stats Tab -->
+    <div *ngIf="activeTab==='stats'">
+      <h3 class="text-2xl font-bold text-green-400 mb-4">Stats</h3>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="bg-gray-800 p-6 rounded-xl shadow">
+          <p class="text-gray-400">Tasks Completed</p>
+          <h2 class="text-3xl font-bold text-blue-400">128</h2>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-xl shadow">
+          <p class="text-gray-400">Reminders Sent</p>
+          <h2 class="text-3xl font-bold text-green-400">57</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Tab -->
+    <div *ngIf="activeTab==='account'">
+      <h3 class="text-2xl font-bold text-red-400 mb-4">Danger Zone</h3>
+      <div class="bg-gray-800 p-6 rounded-xl shadow">
+        <p class="text-gray-400">Once you delete your account, there is no going back.</p>
+        <button (click)="deleteAccount()" class="mt-4 bg-red-600 px-4 py-2 rounded hover:bg-red-700">
+          Delete Account
+        </button>
+      </div>
+    </div>
+  </main>
+</div>

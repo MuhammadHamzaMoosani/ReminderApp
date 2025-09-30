@@ -1,0 +1,96 @@
+<div class="p-6 text-white">
+  
+
+  <!-- Quick Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+      <p class="text-gray-400">Tasks Due Today</p>
+      <h3 class="text-2xl font-bold text-green-400">{{ tasksDueToday }}</h3>
+    </div>
+    <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+      <p class="text-gray-400">Overdue Tasks</p>
+      <h3 class="text-2xl font-bold text-red-400">{{ overdueTasks }}</h3>
+    </div>
+    <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+      <p class="text-gray-400">Completed Tasks</p>
+      <h3 class="text-2xl font-bold text-blue-400">{{ completedTasks }}</h3>
+    </div>
+  </div>
+
+  <!-- Calendar -->
+  <!-- <div class="flex justify-end gap-4 mb-4">
+    <button class="bg-green-600 px-4 py-2 rounded-xl hover:bg-green-700" (click)="showAddTaskModal = true">+ Add Task</button>
+    <button class="bg-blue-600 px-4 py-2 rounded-xl hover:bg-blue-700" routerLink="/finance">Financial Hub</button>
+  </div> -->
+  <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
+
+  <!-- ✅ Save Changes Button -->
+  <div *ngIf="unsavedChanges" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+    <button (click)="saveCalendarChanges()" class="bg-blue-600 px-6 py-2 rounded-lg font-bold hover:bg-blue-700">
+      Save Changes
+    </button>
+  </div>
+</div>
+
+<!-- ✅ Add Task Modal -->
+<div *ngIf="showAddTaskModal" class="fixed inset-0  bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50">
+  <div class="bg-gray-900 p-6 rounded-xl w-96 relative">
+    <h2 class="text-xl font-bold mb-4 text-green-400">Add New Task</h2>
+
+    <form (ngSubmit)="saveNewTask()" class="space-y-3">
+      <input type="text" [(ngModel)]="newTask.title" name="title" placeholder="Title"
+        class="w-full p-2 rounded bg-gray-800 text-white" />
+
+      <textarea [(ngModel)]="newTask.description" name="description" placeholder="Description"
+        class="w-full p-2 rounded bg-gray-800 text-white"></textarea>
+
+      <label class="block text-sm">Due Date:</label>
+      <input type="date" [(ngModel)]="newTask.dueDate" name="dueDate"
+        [min]="today"
+        class="w-full p-2 rounded bg-gray-800 text-white" />
+
+      <label class="block text-sm">Priority:</label>
+      <select [(ngModel)]="newTask.priority" name="priority"
+        class="w-full p-2 rounded bg-gray-800 text-white">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+
+      <!-- Subtasks -->
+      <div class="bg-gray-800 p-3 rounded">
+        <h3 class="font-semibold text-sm mb-2">Subtasks</h3>
+        <div *ngFor="let sub of newTask.subtasks; let i=index" class="flex items-center mb-2">
+          <input type="text" [(ngModel)]="sub.title" name="subtask{{i}}" class="flex-1 p-2 rounded bg-gray-900 text-white mr-2" />
+          <button type="button" (click)="removeNewSubtask(i)" class="text-red-400">✖</button>
+        </div>
+        <button type="button" (click)="addNewSubtask()" class="text-green-400 text-sm">+ Add Subtask</button>
+      </div>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" (click)="showAddTaskModal=false" class="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-green-600 rounded hover:bg-green-700">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ✅ View Task Modal -->
+<div *ngIf="selectedTask" class="fixed inset-0  bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50">
+  <div class="bg-gray-900 p-6 rounded-xl w-96">
+    <h2 class="text-xl font-bold mb-4 text-green-400">{{ selectedTask.title }}</h2>
+    <p><span class="font-bold">Due Date:</span> {{ selectedTask.dueDate }}</p>
+    <p><span class="font-bold">Priority:</span> {{ selectedTask.priority }}</p>
+
+    <h3 class="font-semibold mt-3">Subtasks</h3>
+    <ul class="list-disc ml-5 text-gray-300">
+      <li *ngFor="let sub of selectedTask.subtasks">{{ sub.title }}</li>
+    </ul>
+
+    <div class="flex justify-end gap-2 mt-4">
+      <button (click)="selectedTask=null" class="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600">Close</button>
+    </div>
+  </div>
+</div>

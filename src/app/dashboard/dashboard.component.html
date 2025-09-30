@@ -1,0 +1,113 @@
+<div class="p-6 text-white">
+  <h2 class="text-3xl font-bold mb-6 text-green-400">Dashboard</h2>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+      <p class="text-gray-400">Tasks Due Today</p>
+      <h3 class="text-2xl font-bold text-green-400">{{ tasksDueToday }}</h3>
+    </div>
+    <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+      <p class="text-gray-400">Overdue Tasks</p>
+      <h3 class="text-2xl font-bold text-red-400">{{ overdueTasks }}</h3>
+    </div>
+    <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+      <p class="text-gray-400">Completed Tasks</p>
+      <h3 class="text-2xl font-bold text-blue-400">{{ completedTasks }}</h3>
+    </div>
+    <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+      <p class="text-gray-400">Total Tasks</p>
+      <h3 class="text-2xl font-bold text-yellow-400">{{ totalTasks }}</h3>
+    </div>
+  </div>
+
+  <!-- Deadlines + Calendar -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    
+   <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+  <h3 class="text-lg font-semibold mb-4">Upcoming Deadlines</h3>
+  <ul>
+    <li *ngFor="let task of upcomingTasks" 
+        [@fadeRemove] 
+        class="py-2 border-b border-gray-700">
+
+      <!-- Header row -->
+      <div class="flex justify-between items-center cursor-pointer hover:text-green-400"
+           (click)="toggleExpand(task)">
+        <div class="flex items-center gap-2">
+          <mat-icon class="text-gray-400 text-sm transition-transform duration-300"
+            [class.rotate-180]="expandedTask === task">
+            expand_more
+          </mat-icon>
+          <span>{{ task.title }}</span>
+        </div>
+        <span class="text-gray-400 text-sm">{{ task.dueDate | date:'MMM d' }}</span>
+      </div>
+
+      <!-- Expanded subtasks -->
+      <div [@expandCollapse]="expandedTask === task ? 'expanded' : 'collapsed'"
+           class="pl-8 mt-2">
+        <ul *ngIf="task.subtasks && task.subtasks.length>0" class="ml-2 list-disc text-gray-300 text-sm">
+          <li *ngFor="let sub of task.subtasks" class="flex items-center gap-2">
+            <input type="checkbox"
+                   [(ngModel)]="sub.completed"
+                   (change)="checkCompletion(task)"
+                   class="w-4 h-4"/>
+            <span [class.line-through]="sub.completed">{{ sub.title }}</span>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>
+
+
+    <div class="bg-gray-800 p-6 rounded-xl shadow-md">
+      <h3 class="text-lg font-semibold mb-4">Calendar</h3>
+      <full-calendar [options]="calendarOptions"></full-calendar>
+      <button class="mt-3 text-blue-400 hover:underline" routerLink="/calendar">
+        Open Full Calendar →
+      </button>
+    </div>
+  </div>
+
+  <!-- Finance -->
+  <div class="bg-gray-800 p-6 rounded-xl shadow-md mb-8">
+    <h3 class="text-lg font-semibold mb-4">Financial Snapshot</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <p class="text-gray-400">Income</p>
+        <p class="text-green-400 font-bold">{{ totalIncome | currency }}</p>
+      </div>
+      <div>
+        <p class="text-gray-400">Expenses</p>
+        <p class="text-red-400 font-bold">{{ totalExpenses | currency }}</p>
+      </div>
+      <div>
+        <p class="text-gray-400">Savings</p>
+        <p class="text-blue-400 font-bold">{{ totalSavings | currency }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Details Modal -->
+  <div *ngIf="selectedTask"
+       class="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50">
+    <div class="bg-gray-900 p-6 rounded-xl w-96">
+      <h2 class="text-xl font-bold mb-4 text-green-400">{{ selectedTask.title }}</h2>
+      <p><span class="font-bold">Due:</span> {{ selectedTask.dueDate | date:'MMM d, y' }}</p>
+      <p><span class="font-bold">Priority:</span> {{ selectedTask.priority || '—' }}</p>
+
+      <h3 class="font-semibold mt-3">Subtasks</h3>
+      <ul class="list-disc ml-5 text-gray-300">
+        <li *ngFor="let sub of selectedTask.subtasks">
+          <span [class.line-through]="sub.completed">{{ sub.title }}</span>
+        </li>
+      </ul>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button (click)="selectedTask=null" class="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
