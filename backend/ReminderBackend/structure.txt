@@ -1,0 +1,28 @@
+reminder-app/
+│
+├── src/
+│   ├── config/
+│   │   └── db.js                # MongoDB connection
+│   ├── models/
+│   │   ├── user.model.js        # User schema
+│   │   ├── task.model.js        # Task schema
+│   │   └── financial.model.js   # Financial schema
+│   ├── controllers/
+│   │   ├── user.controller.js   # User controller logic
+│   │   ├── task.controller.js   # Task controller logic
+│   │   └── financial.controller.js # Financial controller logic
+│   ├── routes/
+│   │   ├── user.routes.js       # User routes
+│   │   ├── task.routes.js       # Task routes
+│   │   └── financial.routes.js  # Financial routes
+│   ├── utils/
+│   │   └── whatsapp.js          # WhatsApp placeholder integration
+│   ├── jobs/
+│   │   └── reminder.job.js      # Cron job for task reminders
+│   ├── app.js                  # Express app setup
+│   └── server.js               # Entry point
+│
+├── .env                        # Environment variables
+├── .gitignore
+├── package.json
+└── README.md

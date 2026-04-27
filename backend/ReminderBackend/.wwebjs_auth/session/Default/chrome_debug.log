@@ -1,0 +1,44 @@
+[1120/212351.953:INFO:CONSOLE(115)] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yh/r/Djg05-ZBDDm.js (115)
+[1120/212352.469:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Feature xr-spatial-tracking's parameters are ignored.", source:  (0)
+[1120/212352.469:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'attribution-reporting'.", source:  (0)
+[1120/212352.469:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'compute-pressure'.", source:  (0)
+[1120/212352.471:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'interest-cohort'.", source:  (0)
+[1120/212352.471:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-issuance'.", source:  (0)
+[1120/212352.471:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'shared-storage'.", source:  (0)
+[1120/212352.472:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'shared-storage-select-url'.", source:  (0)
+[1120/212352.472:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-redemption'.", source:  (0)
+[1120/212352.472:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'unload'.", source:  (0)
+[1120/212352.472:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
+[1120/212352.473:INFO:CONSOLE(0)] "Document-Policy HTTP header: Unrecognized document policy feature name include-js-call-stacks-in-crash-reports.", source: https://web.whatsapp.com/ (0)
+[1120/212357.359:INFO:CONSOLE(113)] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yd/r/Gvf353U-81g.js (113)
+[1120/212413.946:INFO:CONSOLE(77)] "ErrorUtils caught an error:
+
+handshake-error
+
+Subsequent non-fatal errors won't be logged; see https://fburl.com/debugjs. [object Object]", source: https://static.whatsapp.net/rsrc.php/v4/yu/r/4wLJsIo9jix.js (77)
+[1120/212430.999:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Feature xr-spatial-tracking's parameters are ignored.", source:  (0)
+[1120/212430.999:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'attribution-reporting'.", source:  (0)
+[1120/212430.999:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'compute-pressure'.", source:  (0)
+[1120/212431.000:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'interest-cohort'.", source:  (0)
+[1120/212431.000:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-issuance'.", source:  (0)
+[1120/212431.000:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Origin trial controlled feature not enabled: 'shared-storage'.", source:  (0)
+[1120/212431.000:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'shared-storage-select-url'.", source:  (0)
+[1120/212431.000:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'private-state-token-redemption'.", source:  (0)
+[1120/212431.000:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'unload'.", source:  (0)
+[1120/212431.001:INFO:CONSOLE(0)] "Error with Permissions-Policy header: Unrecognized feature: 'window-management'.", source:  (0)
+[1120/212431.002:INFO:CONSOLE(0)] "Document-Policy HTTP header: Unrecognized document policy feature name include-js-call-stacks-in-crash-reports.", source: https://web.whatsapp.com/ (0)
+[1120/212432.911:ERROR:entry_impl.cc(1072)] No file for 8000011c
+[1120/212432.912:ERROR:entry_impl.cc(1072)] No file for 8000011e
+[1120/212432.916:ERROR:entry_impl.cc(1072)] No file for 8000011d
+[1120/212432.918:ERROR:entry_impl.cc(1072)] No file for 80000120
+[1120/212432.919:ERROR:entry_impl.cc(1072)] No file for 8000011f
+[1120/212432.926:ERROR:entry_impl.cc(1072)] No file for 80000121
+[1120/212432.927:ERROR:entry_impl.cc(1072)] No file for 80000123
+[1120/212433.189:ERROR:entry_impl.cc(1072)] No file for 8000011b
+[1120/212433.474:INFO:CONSOLE(77)] "ErrorUtils caught an error:
+
+[sw] sw-update-failed: AbortError: Failed to update a ServiceWorker for scope ('https://web.whatsapp.com/') with script ('https://web.whatsapp.com/sw.js'): Failed to access storage.
+
+Subsequent non-fatal errors won't be logged; see https://fburl.com/debugjs. [object Object]", source: https://static.whatsapp.net/rsrc.php/v4/yu/r/4wLJsIo9jix.js (77)
+[1120/212433.703:ERROR:entry_impl.cc(1072)] No file for 80000125
+[1120/212433.723:INFO:CONSOLE(1)] "Uncaught NetworkError: Failed to execute 'importScripts' on 'WorkerGlobalScope': The script at 'https://static.whatsapp.net/rsrc.php/v4/yZ/r/Yf3CpCAvFto.js' failed to load.", source: https://web.whatsapp.com/static_resources/webworker_v1/init_script/?__hs=20412.HYP%3Awhatsapp_comet_pkg.2.1...0&__spin_r=1030169719&__spin_b=trunk&__spin_t=1763655871 (1)

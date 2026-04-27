@@ -1,0 +1,33 @@
+::ng-deep .fc-event.custom-event {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+::ng-deep .fc-event.custom-event.work {
+  background-color: #1E90FF !important;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+::ng-deep .fc-event.custom-event.personal {
+  background-color: #32CD32 !important;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+::ng-deep .fc-event.custom-event.urgent {
+  background-color: #FF4500 !important;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+::ng-deep .fc-event.custom-event.other {
+  background-color: #FFD700 !important;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}

@@ -1,0 +1,141 @@
+<div>
+  <div class="flex flex-col md:flex-row items-center justify-between px-8 py-20 md:px-17">
+    <!-- Left Side -->
+    <div class="p-5 md:p-0">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4"
+          [ngStyle]="{'color': 'var(--accent)'}">
+        Reminder App
+      </h1>
+      <h2 class="text-xl md:text-2xl"
+          [ngStyle]="{'color': 'var(--text-main)'}">
+        Setup today and get annoying reminders to do your work already.
+      </h2>
+    </div>
+
+    <!-- Signup Form -->
+    <div class="md:w-1/2 w-full p-8 rounded-2xl shadow-lg"
+         [ngStyle]="{'background': 'var(--bg-secondary)', 'color': 'var(--text-main)'}"
+         data-aos="fade-up">
+     <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="space-y-4">
+  <input 
+    [ngStyle]="{'background': 'var(--bg-inverted)', 'color': 'var(--text-invert)'}" 
+    type="text" 
+    name="name" 
+    ngModel 
+    required 
+    placeholder="Name" 
+    #name="ngModel"
+    class="w-full p-3 rounded-xl" 
+  />
+  <div *ngIf="name.invalid && name.touched" class="text-red-500 text-sm">Name is required</div>
+
+  <input 
+    [ngStyle]="{'background': 'var(--bg-inverted)', 'color': 'var(--text-invert)'}" 
+    type="email" 
+    name="email" 
+    ngModel 
+    required 
+    placeholder="Email" 
+    #email="ngModel"
+    class="w-full p-3 rounded-xl" 
+  />
+  <div *ngIf="email.invalid && email.touched" class="text-red-500 text-sm">Valid email is required</div>
+
+  <input 
+    [ngStyle]="{'background': 'var(--bg-inverted)', 'color': 'var(--text-invert)'}" 
+    type="text" 
+    name="phone" 
+    ngModel 
+    required 
+    placeholder="Number" 
+    #phone="ngModel"
+    class="w-full p-3 rounded-xl" 
+  />
+  <div *ngIf="phone.invalid && phone.touched" class="text-red-500 text-sm">Phone number is required</div>
+
+  <input 
+    [ngStyle]="{'background': 'var(--bg-inverted)', 'color': 'var(--text-invert)'}" 
+    type="password" 
+    name="password" 
+    ngModel 
+    required 
+    minlength="6"
+    placeholder="Password" 
+    #password="ngModel"
+    class="w-full p-3 rounded-xl" 
+  />
+  <div *ngIf="password.invalid && password.touched" class="text-red-500 text-sm">
+    Password is required (min 6 characters)
+  </div>
+
+  <!-- Button -->
+  <button 
+    [disabled]="myForm.invalid || loading"
+    [ngStyle]="{'background': 'var(--button)', 'color': 'var(--text-white)'}" 
+    type="submit" 
+    class="w-full p-3 rounded-xl font-bold transition-colors cursor-pointer hover:opacity-90 active:scale-95 flex justify-center items-center gap-2 disabled:opacity-50"
+  >
+    <span *ngIf="!loading">Get Started</span>
+    <app-loader [visible]="loading"></app-loader>
+  </button>
+
+  <div *ngIf="error" class="text-red-500">{{ error }}</div>
+</form>
+<app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible"></app-toast>
+
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="px-8 md:px-20 py-16">
+    <h3 class="text-3xl text-center font-bold mb-12"
+        [ngStyle]="{'color': 'var(--accent)'}"
+        data-aos="fade-up">
+      How it works
+    </h3>
+
+    <div class="grid md:grid-cols-3 gap-10" data-aos="fade-up">
+      <!-- Feature 1 -->
+      <div class="rounded-xl p-6 text-center shadow-md"
+           [ngStyle]="{'background': 'var(--bg-secondary)', 'color': 'var(--text-main)'}"
+           data-aos="fade-up">
+        <img src="assets/whatsApp_logo.png" alt=""
+             class="align-middle mb-4 mx-auto w-16 h-16">
+        <h4 class="text-2xl font-bold mb-2" [ngStyle]="{'color': 'var(--accent)'}">
+          Connect WhatsApp
+        </h4>
+        <p [ngStyle]="{'color': 'var(--text-muted)'}">
+          Log in once with QR code and stay connected through saved sessions. Done on server using a bot
+        </p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="rounded-xl p-6 text-center shadow-md"
+           [ngStyle]="{'background': 'var(--bg-secondary)', 'color': 'var(--text-main)'}"
+           data-aos="fade-up">
+        <img src="assets/tick.png" alt=""
+             class="align-middle mb-4 mx-auto w-16 h-16">
+        <h4 class="text-2xl font-bold mb-2" [ngStyle]="{'color': 'var(--accent)'}">
+          Schedule Tasks
+        </h4>
+        <p [ngStyle]="{'color': 'var(--text-muted)'}">
+          Add tasks, due dates, and how often you want to be reminded.
+        </p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="rounded-xl p-6 text-center shadow-md"
+           [ngStyle]="{'background': 'var(--bg-secondary)', 'color': 'var(--text-main)'}"
+           data-aos="fade-up">
+        <img src="assets/bell.png" alt=""
+             class="align-middle mb-4 mx-auto w-16 h-16">
+        <h4 class="text-2xl font-bold mb-2" [ngStyle]="{'color': 'var(--accent)'}">
+          Get Reminded
+        </h4>
+        <p [ngStyle]="{'color': 'var(--text-muted)'}">
+          Get WhatsApp messages that keep you on track — no excuses!
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

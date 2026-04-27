@@ -1,0 +1,68 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+html, body { height: 100%; }
+body { 
+    margin: 0;
+    
+}
+
+
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Dark theme */
+.dark {
+  --bg-main: linear-gradient(to bottom right, #111827, #1f2937, #111827);
+  --bg-secondary: #1f2937;   /* cards */
+  --bg-tertiary: #374151;    /* borders/hover */
+  --bg-input: #374151;
+  --bg-inverted: #f9fafb;
+  --text-white: #f9fafb;
+  --text-nav: #f9fafb;
+--navbar-bg: #101828 ;   /* same as dark secondary */
+  --navbar-text: #f9fafb;
+  --text-main: #f9fafb;
+  --text-muted: #9ca3af;
+  --text-invert: #111827;
+
+  --accent: #22C55E; 
+  --button: #16a34a;  /* Tailwind green-600 for better contrast */
+
+  --danger: #dc2626;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+
+  --border: #374151;
+  --shadow: rgba(0,0,0,0.4);
+}
+
+/* Light theme */
+.light {
+  --bg-main: linear-gradient(to bottom right, #f9fafb, #e5e7eb, #f9fafb);
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e5e7eb;
+  --bg-input: #f3f4f6;
+  --text-white: #ffffff;
+  --text-main: #111827;
+  --text-muted: #4b5563;
+  --text-invert: #f9fafb;
+ --navbar-bg: #3e3f3f;   /* a shade darker than main background */
+  --navbar-text: #111827;
+    --accent: #16a34a;
+    --button: #19d15d;  /* Tailwind green-600 for better contrast */
+    --text-nav: #16a34a;  /* Tailwind green-600 for better contrast */
+    --bg-inverted: #4b5563;
+    /* Tailwind green-600 for better contrast */
+
+  --danger: #dc2626;
+  --warning: #d97706;
+  --info: #2563eb;
+
+  --border: #d1d5db;
+  --shadow: rgba(0,0,0,0.1);
+}

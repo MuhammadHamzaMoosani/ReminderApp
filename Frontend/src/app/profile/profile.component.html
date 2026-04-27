@@ -1,0 +1,137 @@
+<div class="flex h-screen" [ngStyle]="{'color': 'var(--text-main)'}">
+  <!-- Sidebar -->
+  <aside class="w-64 p-6 space-y-4 border-r"
+         [ngStyle]="{'background': 'var(--bg-secondary)', 'border-color': 'var(--bg-tertiary)'}">
+    <h2 class="text-xl font-bold mb-6" [ngStyle]="{'color': 'var(--accent)'}">Profile Settings</h2>
+
+    <button (click)="activeTab='info'" 
+            class="block w-full text-left px-4 py-2 rounded"
+            [ngStyle]="{'background': activeTab==='info' ? 'var(--bg-tertiary)' : 'transparent'}">
+      Information
+    </button>
+    <button (click)="activeTab='reminders'" 
+            class="block w-full text-left px-4 py-2 rounded"
+            [ngStyle]="{'background': activeTab==='reminders' ? 'var(--bg-tertiary)' : 'transparent'}">
+      Preferences
+    </button>
+    <button (click)="activeTab='stats'" 
+            class="block w-full text-left px-4 py-2 rounded"
+            [ngStyle]="{'background': activeTab==='stats' ? 'var(--bg-tertiary)' : 'transparent'}">
+      Stats
+    </button>
+    <button (click)="activeTab='account'" 
+            class="block w-full text-left px-4 py-2 rounded"
+            [ngStyle]="{'background': activeTab==='account' ? 'var(--bg-tertiary)' : 'transparent'}">
+      Account
+    </button>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 p-8 overflow-y-auto">
+    <!-- Information Tab -->
+    <div *ngIf="activeTab==='info'" class="space-y-6">
+      <h3 class="text-2xl font-bold mb-4" [ngStyle]="{'color': 'var(--accent)'}">Information</h3>
+      <div class="p-6 rounded-xl shadow space-y-4"
+           [ngStyle]="{'background': 'var(--bg-secondary)'}">
+
+        <label class="block">Full Name
+          <input [(ngModel)]="profile.name" 
+                 class="w-full p-3 mt-1 rounded"
+                 [ngStyle]="{'background': 'var(--bg-input)', 'color': 'var(--text-main)'}"/>
+        </label>
+
+        <label class="block">Email
+          <input [(ngModel)]="profile.email" type="email"
+                 class="w-full p-3 mt-1 rounded"
+                 [ngStyle]="{'background': 'var(--bg-input)', 'color': 'var(--text-main)'}"/>
+        </label>
+
+        <label class="block">Phone
+          <input [(ngModel)]="profile.phone"
+                 class="w-full p-3 mt-1 rounded"
+                 [ngStyle]="{'background': 'var(--bg-input)', 'color': 'var(--text-main)'}"/>
+        </label>
+
+        <button class="px-4 py-2 rounded"
+                [ngStyle]="{'background': 'var(--accent)', 'color': 'var(--text-invert)'}">
+          Save Info
+        </button>
+      </div>
+    </div>
+
+    <!-- Reminders Tab -->
+    <div *ngIf="activeTab==='reminders'" class="space-y-6">
+      <h3 class="text-2xl font-bold mb-4" [ngStyle]="{'color': 'var(--accent)'}">Preferences</h3>
+      <div class="p-6 rounded-xl shadow space-y-4"
+           [ngStyle]="{'background': 'var(--bg-secondary)'}">
+
+        <label class="flex items-center gap-2">
+          <input type="checkbox" [(ngModel)]="profile.remindersEnabled" class="w-4 h-4"/>
+          Enable Reminders
+        </label>
+
+        <label class="block">Reminder Method
+          <select [(ngModel)]="profile.reminder"
+                  class="w-full p-3 mt-1 rounded"
+                  [ngStyle]="{'background': 'var(--bg-input)', 'color': 'var(--text-main)'}">
+            <option value="whatsapp">WhatsApp</option>
+            <option value="email">Email</option>
+          </select>
+        </label>
+
+        <!-- Theme Toggle -->
+        <div class="flex items-center gap-3">
+          <span>Dark Mode Enabled:</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox"
+                   [(ngModel)]="isDarkTheme"
+                   (change)="toggleTheme()"
+                   class="sr-only peer" />
+            <div class="w-11 h-6 rounded-full transition-colors"
+                 [ngStyle]="{'background': isDarkTheme ? 'var(--accent)' : 'var(--bg-tertiary)'}"></div>
+            <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full transition-transform"
+                 [class.translate-x-5]="isDarkTheme"></div>
+          </label>
+        </div>
+
+        <button class="px-4 py-2 rounded" 
+                [ngStyle]="{'background': 'var(--button)', 'color': 'var(--text-white)'}">
+          Save Preferences
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Tab -->
+    <div *ngIf="activeTab==='stats'" class="space-y-6">
+      <h3 class="text-2xl font-bold mb-4" [ngStyle]="{'color': 'var(--accent)'}">Stats</h3>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="p-6 rounded-xl shadow"
+             [ngStyle]="{'background': 'var(--bg-secondary)'}">
+          <p [ngStyle]="{'color': 'var(--text-muted)'}">Tasks Completed</p>
+          <h2 class="text-3xl font-bold" [ngStyle]="{'color': 'var(--info)'}">128</h2>
+        </div>
+        <div class="p-6 rounded-xl shadow"
+             [ngStyle]="{'background': 'var(--bg-secondary)'}">
+          <p [ngStyle]="{'color': 'var(--text-muted)'}">Reminders Sent</p>
+          <h2 class="text-3xl font-bold" [ngStyle]="{'color': 'var(--accent)'}">57</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Tab -->
+    <div *ngIf="activeTab==='account'" class="space-y-6">
+      <h3 class="text-2xl font-bold mb-4" [ngStyle]="{'color': 'var(--danger)'}">Danger Zone</h3>
+      <div class="p-6 rounded-xl shadow"
+           [ngStyle]="{'background': 'var(--bg-secondary)'}">
+        <p [ngStyle]="{'color': 'var(--text-muted)'}">
+          Once you delete your account, there is no going back.
+        </p>
+        <button (click)="deleteAccount()"
+                class="mt-4 px-4 py-2 rounded"
+                [ngStyle]="{'background': 'var(--danger)', 'color': 'var(--text-invert)'}">
+          Delete Account
+        </button>
+      </div>
+    </div>
+  </main>
+</div>

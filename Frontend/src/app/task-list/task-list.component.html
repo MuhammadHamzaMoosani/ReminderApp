@@ -1,0 +1,246 @@
+<div class="flex h-screen">
+  <!-- ✅ Side Nav -->
+ <aside [class.w-64]="!collapsed" [class.w-16]="collapsed"
+       class="flex flex-col transition-all duration-300 relative overflow-hidden"
+       [ngStyle]="{'background': 'var(--bg-main)', 'color': 'var(--text-main)'}">
+
+  <!-- Header -->
+  <div class="p-4 flex justify-between items-center border-b"
+       [ngStyle]="{'border-color': 'var(--bg-tertiary)'}">
+    <h3 *ngIf="!collapsed" class="text-xl font-bold"
+        [ngStyle]="{'color': 'var(--accent)'}">Workspaces</h3>
+    <button (click)="collapsed=!collapsed"
+            [ngStyle]="{'color': 'var(--text-muted)'}"
+            class="hover:opacity-80">
+      <mat-icon>{{ collapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Workspaces List -->
+  <ul class="flex-1 overflow-y-auto p-4 space-y-2">
+    <li *ngFor="let ws of workspaces"
+        class="p-3 rounded-lg flex justify-between items-center"
+        [ngStyle]="{'background': 'var(--bg-secondary)'}">
+      
+      <!-- Inline Rename -->
+      <ng-container *ngIf="ws.editing; else viewMode">
+        <input [(ngModel)]="ws.name"
+               (blur)="stopEditing(ws)"
+               (keydown.enter)="stopEditing(ws)"
+               class="px-2 py-1 rounded w-full"
+               [ngStyle]="{'background': 'var(--bg-tertiary)', 'color': 'var(--text-main)'}"/>
+      </ng-container>
+      <ng-template #viewMode>
+        <span *ngIf="!collapsed">{{ ws.name }}</span>
+      </ng-template>
+
+      <!-- 3-dot menu -->
+      <div class="relative" (click)="$event.stopPropagation()" *ngIf="!collapsed">
+        <button (click)="toggleMenu(ws)"
+                class="p-1 rounded hover:opacity-80"
+                [ngStyle]="{'color': 'var(--text-muted)'}">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <div *ngIf="ws.showMenu"
+             class="absolute right-0 mt-2 w-32 rounded-lg shadow-md text-sm z-20"
+             [ngStyle]="{'background': 'var(--bg-tertiary)'}">
+          <button (click)="editWorkspace(ws)"
+                  class="block w-full text-left px-4 py-2 rounded-lg hover:opacity-80">
+            Rename
+          </button>
+          <button (click)="removeWorkspace(ws)"
+                  class="block w-full text-left px-4 py-2 rounded-lg hover:opacity-80"
+                  [ngStyle]="{'color': 'var(--danger)'}">
+            Delete
+          </button>
+        </div>
+      </div>
+    </li>
+
+    <!-- Add Workspace -->
+    <li *ngIf="!collapsed">
+      <button (click)="addWorkspace()"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg w-full"
+              [ngStyle]="{'background': 'var(--accent)', 'color': 'var(--text-white)'}">
+        <mat-icon>add</mat-icon>
+        <span>Add Workspace</span>
+      </button>
+    </li>
+  </ul>
+</aside>
+
+  <!-- ✅ Main Content -->
+  <main class="flex-1 p-6 text-white overflow-y-auto">
+    <div class="flex items-center justify-between p-2 pb-6">
+  <!-- Header -->
+  <h2 class="text-2xl font-bold text-green-400">My Tasks</h2>
+
+  <!-- Calendar Button -->
+  <button (click)="toggleCalendar()" 
+          class="flex items-center gap-1 px-2 py-1 rounded-md bg-blue-600 hover:bg-blue-700 text-xs">
+    <mat-icon class="text-sm">calendar_today</mat-icon>
+    <span *ngIf="!collapsed">Calendar</span>
+  </button>
+</div>
+<ng-container *ngIf="activeWorkspace">
+  <div *ngFor="let task of activeWorkspace.tasks"
+       class="p-4 mb-3 rounded-lg shadow-md transition"
+       [ngStyle]="{'background': 'var(--bg-secondary)', 'color': 'var(--text-main)'}"
+       [class.hover\:opacity-90]="true">
+    
+    <!-- Task Header -->
+    <div class="flex justify-between items-center" (click)="toggleSubtasks(task)">
+      <div>
+        <h3 class="font-semibold text-lg">{{ task.title }}</h3>
+        <p class="text-sm" [ngStyle]="{'color': 'var(--text-muted)'}">
+          Due Date: {{ task.dueDate }}
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Priority Badge -->
+        <span class="uppercase text-sm font-bold"
+              [ngStyle]="{
+                'color': task.priority === 'high' ? 'var(--danger)' :
+                         task.priority === 'medium' ? 'var(--warning)' :
+                         'var(--accent)'
+              }">
+          {{ task.priority }}
+        </span>
+
+        <!-- Dropdown toggle -->
+        <button (click)="toggleSubtasks(task); $event.stopPropagation()"
+                class="p-1 rounded hover:opacity-80"
+                [ngStyle]="{'color': 'var(--text-muted)'}">
+          <mat-icon>{{ task.ShowSubtasks ? 'expand_less' : 'expand_more' }}</mat-icon>
+        </button>
+
+        <!-- 3-dot menu -->
+        <div class="relative" (click)="$event.stopPropagation()">
+          <button (click)="toggleTaskMenu(task)"
+                  class="p-1 rounded hover:opacity-80"
+                  [ngStyle]="{'color': 'var(--text-muted)'}">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <div *ngIf="task.showMenu"
+               class="absolute right-0 mt-2 w-32 rounded-lg shadow-md text-sm z-20"
+               [ngStyle]="{'background': 'var(--bg-tertiary)'}">
+            <button (click)="editTask(task)"
+                    class="block w-full text-left px-4 py-2 rounded-lg hover:opacity-80">
+              Edit
+            </button>
+            <button (click)="deleteTask(task)"
+                    class="block w-full text-left px-4 py-2 rounded-lg hover:opacity-80"
+                    [ngStyle]="{'color': 'var(--danger)'}">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="mt-2 w-full h-2 rounded"
+         [ngStyle]="{'background': 'var(--bg-tertiary)'}">
+      <div class="h-2 rounded"
+           [ngStyle]="{'background': 'var(--accent)', 'width.%': getProgress(task)}"></div>
+    </div>
+
+    <!-- Subtasks -->
+    <div *ngIf="task.ShowSubtasks"
+         @expandCollapse
+         class="mt-3 space-y-2 overflow-hidden">
+      <div *ngFor="let sub of task.subtasks"
+           @subtaskAnimation
+           class="flex items-center p-2 rounded"
+           [ngStyle]="{'background': 'var(--bg-input)'}">
+        <input type="checkbox" [(ngModel)]="sub.completed" class="mr-2" />
+        <span [class.line-through]="sub.completed" class="text-sm">{{ sub.title }}</span>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+  </main>
+</div>
+
+<!-- ✅ Floating Add Button -->
+<button class="fixed bottom-6 right-6 p-4 rounded-full shadow-lg flex items-center justify-center"
+        [ngStyle]="{'background': 'var(--accent)', 'color': 'var(--text-invert)'}"
+        (click)="openAddTaskModal()">
+  <mat-icon>add</mat-icon>
+</button>
+
+<!-- ✅ Add Task Modal -->
+<!-- ✅ Add Task Modal -->
+<div *ngIf="showAddTaskModal"
+     class="fixed inset-0 flex justify-center items-center z-50 bg-opacity-50 backdrop-blur-sm transition-opacity duration-300"
+     (click)="closeAddTaskModal()"
+     [class.opacity-0]="!showAddTaskModal"
+     [class.pointer-events-none]="!showAddTaskModal">
+
+  <!-- Modal -->
+  <div class="p-6 rounded-xl w-96 relative transform transition-all duration-300"
+       [ngStyle]="{'background': 'var(--bg-secondary)', 'color': 'var(--text-main)'}"
+       [class.scale-95]="!showAddTaskModal"
+       [class.opacity-0]="!showAddTaskModal"
+       [class.scale-100]="showAddTaskModal"
+       [class.opacity-100]="showAddTaskModal"
+       (click)="$event.stopPropagation()">
+
+    <h2 class="text-xl font-bold mb-4" [ngStyle]="{'color': 'var(--accent)'}">Add New Task</h2>
+
+    <form (ngSubmit)="saveNewTask()" class="space-y-3">
+      <input type="text" [(ngModel)]="newTask.title" name="title" placeholder="Title"
+             class="w-full p-2 rounded"
+             [ngStyle]="{'background': 'var(--bg-input)', 'color': 'var(--text-main)'}" />
+
+      <textarea [(ngModel)]="newTask.description" name="description" placeholder="Description"
+                class="w-full p-2 rounded"
+                [ngStyle]="{'background': 'var(--bg-input)', 'color': 'var(--text-main)'}"></textarea>
+
+      <label class="block text-sm">Due Date:</label>
+      <input type="date" [(ngModel)]="newTask.dueDate" name="dueDate"
+             class="w-full p-2 rounded"
+             [ngStyle]="{'background': 'var(--bg-input)', 'color': 'var(--text-main)'}" />
+
+      <label class="block text-sm">Priority:</label>
+      <select [(ngModel)]="newTask.priority" name="priority"
+              class="w-full p-2 rounded"
+              [ngStyle]="{'background': 'var(--bg-input)', 'color': 'var(--text-main)'}">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+
+      <!-- Subtasks -->
+      <div class="p-3 rounded" [ngStyle]="{'background': 'var(--bg-tertiary)'}">
+        <h3 class="font-semibold text-sm mb-2">Subtasks</h3>
+        <div *ngFor="let sub of newTask.subtasks; let i=index" class="flex items-center mb-2">
+          <input type="text" [(ngModel)]="sub.title" name="subtask{{i}}"
+                 class="flex-1 p-2 rounded mr-2"
+                 [ngStyle]="{'background': 'var(--bg-input)', 'color': 'var(--text-main)'}" />
+          <button type="button" (click)="removeNewSubtask(i)" [ngStyle]="{'color': 'var(--danger)'}">✖</button>
+        </div>
+        <button type="button" (click)="addNewSubtask()" [ngStyle]="{'color': 'var(--accent)'}" class="text-sm">+ Add Subtask</button>
+      </div>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button type="button" (click)="closeAddTaskModal()" class="px-4 py-2 rounded"
+                [ngStyle]="{'background': 'var(--bg-tertiary)', 'color': 'var(--text-main)'}">
+          Cancel
+        </button>
+        <button type="submit" class="px-4 py-2 rounded"
+                [ngStyle]="{'background': 'var(--button)', 'color': 'var(--text-invert)'}">
+          Save
+        </button>
+      </div>
+    </form>
+
+    <!-- Close button -->
+    <button (click)="closeAddTaskModal()" class="absolute top-2 right-2"
+            [ngStyle]="{'color': 'var(--text-muted)'}">
+      ✖
+    </button>
+  </div>
+</div>

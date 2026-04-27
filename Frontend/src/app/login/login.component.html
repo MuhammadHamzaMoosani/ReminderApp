@@ -1,0 +1,40 @@
+<div class="flex justify-center p-4 overflow-hidden">
+  <div class="md:w-1/2 w-full p-6 rounded-2xl shadow-lg"
+       [ngStyle]="{'background': 'var(--bg-secondary)', 'color': 'var(--text-main)'}"> 
+    <div class="flex justify-center">
+      <img src="assets/navbar.png" alt="" class="w-28 h-28 md:w-36 md:h-36 object-contain" />
+    </div>
+   <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="space-y-6">
+  <input 
+    [ngStyle]="{'background': 'var(--bg-inverted)', 'color': 'var(--text-invert)'}"  
+    type="email" 
+    name="email" 
+    ngModel 
+    required 
+    placeholder="Email" 
+    class="w-full p-3 rounded-xl" />
+
+  <input 
+    [ngStyle]="{'background': 'var(--bg-inverted)', 'color': 'var(--text-invert)'}"  
+    type="password" 
+    name="password" 
+    ngModel 
+    required 
+    placeholder="Password" 
+    class="w-full p-3 rounded-xl" />
+
+  <button 
+    type="submit"
+    [disabled]="loading || myForm.invalid"
+    class="w-full p-3 rounded-xl font-bold flex justify-center items-center gap-2 transition-colors cursor-pointer hover:opacity-90 active:scale-95 disabled:opacity-50"
+    [ngStyle]="{'background': 'var(--button)', 'color': 'var(--text-white)'}">
+    <span *ngIf="!loading">Login</span>
+    <app-loader [visible]="loading"></app-loader>
+  </button>
+
+  <div *ngIf="error" class="text-red-500 mt-2">{{ error }}</div>
+</form>
+<app-toast [message]="toast.message" [type]="toast.type" [visible]="toast.visible"></app-toast>
+
+  </div>
+</div>

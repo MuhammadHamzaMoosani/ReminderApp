@@ -1,0 +1,7 @@
+<div *ngIf="visible"
+     class="fixed bottom-6 right-6 px-4 py-3 rounded-lg shadow-lg text-white animate-fade-in-out z-50"
+     [ngStyle]="{
+       'background': type === 'success' ? '#22c55e' : '#ef4444'
+     }">
+  {{ message }}
+</div>

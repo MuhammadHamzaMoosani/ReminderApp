@@ -1,0 +1,73 @@
+9/10/25
+Making schema for the backend(done)
+making connection with database(done)
+basic crud api(done)
+
+doing whatsApp related work 
+need to edit delete update and get methods for the whatsapp financial
+havent done any testing yet 
+
+
+9/16/25
+All Functions have been made of whatsApp bot need to fix it tho and test it 
+
+9/17/25 
+All testing till edit and delete is done 
+and it is responding and everything but need to make bulk expenses adding method 
+with certain formatting 
+then also need to make it link with chatgpt or ai api key so that it can act like the middle man 
+
+
+9/21/25
+Edit is complete 
+Checking Delete now 
+Delete is working now
+
+NEED TO DO BULK CREATE AND NEED TO DO OCR 
+
+9/27/25
+
+Bulk Create is done and working properly 
+OCR is still work in progress
+Finding the best model for the OCR
+OCR DONE???(not done trying still )
+LLM to be attached to this so flow of convo better (need to do )
+
+
+9/28/25
+moving on to task reminder 
+testing all the below
+Task to do list 
+Basic API 
+Get all the task for the current users (done)
+Get one task for the current users (done)
+create a task (done)
+Upadate a certain task for the current user (done)
+Delete the task for the current user (done)
+
+
+
+
+
+
+----------NOT DONE------------------------------------------
+Task to do list 
+Basic API 
+Get all the task for the current users 
+Get one task for the current users 
+Upadate a certain task for the current user 
+Delete the task for the current user 
+
+
+Check reminder is working for both financial and task 
+
+
+Calender view needed for the task ,plus color coded 
+So maybe a color ke field in tasks 
+need to see how to make a sub task list ,probably easier to do in mongo 
+priority field in task to mark how important the task is 
+work space type thing (idk how to do that rn )
+
+
+--------------------SECURITY----------------------
+jwt for apis 
