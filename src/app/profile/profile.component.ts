@@ -9,6 +9,8 @@ import { ThemeServiceService } from '../theme-service.service';
 })
 export class ProfileComponent {
   theme: 'light' | 'dark';
+  isDarkTheme = true; // default
+
 
 activeTab = 'info';
 
@@ -35,8 +37,9 @@ activeTab = 'info';
     this.theme = this.themeService.getTheme();
   }
 
-  setTheme(value: 'light' | 'dark') {
-    this.themeService.setTheme(value);
-    this.theme = value; // update local display
+  toggleTheme() {
+    const newTheme: 'light' | 'dark' = this.isDarkTheme ? 'dark' : 'light';
+    this.themeService.setTheme(newTheme);
+   this.theme = newTheme;
   }
 }

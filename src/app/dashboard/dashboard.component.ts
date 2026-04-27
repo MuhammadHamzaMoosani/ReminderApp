@@ -10,15 +10,10 @@ import {
   transition,
   animate
 } from '@angular/animations';
-interface Task {
-  id: number;
-  title: string;
-  dueDate: Date;
-  completed?: boolean;
-  priority?: 'low' | 'medium' | 'high';
-  category?: 'work' | 'personal' | 'urgent' | 'other';
-  subtasks?: { title: string; completed: boolean }[];
-}
+import { AuthService } from '../auth-service.service';
+import { TaskService } from '../Helpers/task-service.service';
+import { Workspace } from '../Helpers/models/workspaces.model';
+import { Task } from '../Helpers/models/task.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -42,141 +37,145 @@ interface Task {
   ]
 })
 export class DashboardComponent implements OnInit {
-  tasks: Task[] = [];
 
-  // Stats
+  // 🔹 Constructor & DI
+  constructor(private taskService: TaskService, private auth: AuthService) {}
+
+  // 🔹 State & Data
+  workspaces: Workspace[] = [];
+  activeWorkspace: Workspace | null = null;
+  tasks: Task[] = [];
+  upcomingTasks: Task[] = [];
+  selectedTask: Task | null = null;
+  expandedTask: Task | null = null;
+  showAddTaskModal = false;
+
+  // 🔹 Stats
   tasksDueToday = 0;
   overdueTasks = 0;
   completedTasks = 0;
   totalTasks = 0;
 
-  // Upcoming
-  upcomingTasks: Task[] = [];
-
-  // Finance
+  // 🔹 Finance (demo placeholder)
   totalBalance = 4520.75;
   totalIncome = 6000;
   totalExpenses = 1480;
   totalSavings = this.totalIncome - this.totalExpenses;
 
-  // Calendar
+  // 🔹 Calendar Config
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
     eventContent: (arg) => {
-      // Render only a dot (color set via CSS className)
       return {
         html: `<div class="w-3 h-3 rounded-full ${arg.event.classNames.join(' ')} cursor-pointer"></div>`
       };
     },
     eventClick: (info) => {
-      const task = this.tasks.find(t => t.id.toString() === info.event.id);
+      const task = this.tasks.find(t => t._id?.toString() === info.event.id);
       if (task) this.selectedTask = task;
     },
     events: []
   };
 
-  // Modals
-  showAddTaskModal = false;
-  selectedTask: Task | null = null;
-
+  // 🔹 Lifecycle
   ngOnInit(): void {
-    // Mock tasks
-    this.tasks = [
-      {
-        id: 1,
-        title: 'Finish Angular Dashboard',
-        dueDate: new Date(),
-        completed: false,
-        category: 'work',
-        subtasks: [
-          { title: 'Setup Components', completed: true },
-          { title: 'Connect API', completed: false }
-        ]
-      },
-      {
-        id: 2,
-        title: 'Team Meeting',
-        dueDate: new Date(new Date().setDate(new Date().getDate() + 1)),
-        completed: false,
-        category: 'work',
-        subtasks: []
-      },
-      {
-        id: 3,
-        title: 'Pay Bills',
-        dueDate: new Date(new Date().setDate(new Date().getDate() - 2)),
-        completed: false,
-        category: 'personal',
-        subtasks: [{ title: 'Electricity Bill', completed: false }]
-      },
-      {
-        id: 4,
-        title: 'Submit Report',
-        dueDate: new Date(new Date().setDate(new Date().getDate() - 1)),
-        completed: true,
-        category: 'urgent',
-        subtasks: []
-      }
-    ];
+    const userId = this.auth.getToken() ? this.parseUserIdFromToken() : null;
+    if (!userId) return;
 
-    this.calculateStats();
-    this.setUpcomingTasks();
-    this.setCalendarEvents();
+    // Load all workspaces
+    this.taskService.getWorkspaces(userId).subscribe((workspaces: Workspace[]) => {
+      if (workspaces && workspaces.length) {
+        this.workspaces = workspaces;
+        this.setActiveWorkspace(workspaces[0]); // default to first workspace
+      }
+    });
+
+    // Load upcoming tasks (API)
+    this.taskService.getUpcomingTasks(userId, 7).subscribe((tasks: Task[]) => {
+      this.upcomingTasks = tasks;
+    });
   }
 
+  // 🔹 Active Workspace + Stats
+  setActiveWorkspace(workspace: Workspace) {
+    this.activeWorkspace = workspace;
+    this.tasks = workspace.tasks || [];
+    this.setCalendarEvents();
+
+    // 🔥 fetch stats from backend
+    this.taskService.getStats(workspace._id!).subscribe((stats) => {
+      this.totalTasks = stats.totalTasks;
+      this.completedTasks = stats.completedTasks;
+      this.overdueTasks = stats.overdueTasks;
+      this.tasksDueToday = stats.pendingTasks;
+    });
+  }
+
+  // 🔹 Utilities
+  private parseUserIdFromToken(): string | null {
+    const token = this.auth.getToken();
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.id; // because we stored userId in JWT payload
+    } catch {
+      return null;
+    }
+  }
+
+  // Manual fallback stats calc (still kept if you want local updates)
   private calculateStats(): void {
     const today = new Date();
-    this.tasksDueToday = this.tasks.filter(t =>
-      t.dueDate.toDateString() === today.toDateString() && !t.completed
+    this.tasksDueToday = this.tasks.filter(
+      t => new Date(t.deadline).toDateString() === today.toDateString() && !t.completed
     ).length;
 
-    this.overdueTasks = this.tasks.filter(t =>
-      t.dueDate < today && !t.completed
+    this.overdueTasks = this.tasks.filter(
+      t => new Date(t.deadline) < today && !t.completed
     ).length;
 
     this.completedTasks = this.tasks.filter(t => t.completed).length;
     this.totalTasks = this.tasks.length;
   }
 
+  // Manual upcoming calc (kept as fallback)
   private setUpcomingTasks(): void {
     const today = new Date();
     this.upcomingTasks = this.tasks
-      .filter(t => t.dueDate >= today)
-      .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
+      .filter(t => new Date(t.deadline) >= today)
+      .sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime())
       .slice(0, 5);
   }
 
   private setCalendarEvents(): void {
     this.calendarOptions.events = this.tasks.map(t => ({
-      id: t.id.toString(),
+      id: t._id || '',
       title: t.title,
-      start: t.dueDate,
-      className: `custom-event ${t.category || 'other'}`
+      start: new Date(t.deadline),
+      className: `custom-event ${t.priority || 'other'}`
     }));
   }
- expandedTask: Task | null = null;
 
-toggleExpand(task: Task) {
-  this.expandedTask = this.expandedTask === task ? null : task;
-}
-
-// Called when any subtask changes
-checkCompletion(task: Task) {
-  if (task.subtasks && task.subtasks.every(s => s.completed)) {
-    this.markTaskAsComplete(task);
+  // 🔹 UI Actions
+  toggleExpand(task: Task) {
+    this.expandedTask = this.expandedTask === task ? null : task;
   }
-}
 
-markTaskAsComplete(task: Task) {
-  task.completed = true;
-  console.log(`✅ Task "${task.title}" completed!`);
+  checkCompletion(task: Task) {
+    if (task.subtasks && task.subtasks.every(s => s.completed)) {
+      this.markTaskAsComplete(task);
+    }
+  }
 
-  // Remove it from upcoming list
-  this.upcomingTasks = this.upcomingTasks.filter(t => t !== task);
+  markTaskAsComplete(task: Task) {
+    task.completed = true;
+    console.log(`✅ Task "${task.title}" completed!`);
 
-  // Refresh stats + calendar
-  this.calculateStats();
-  this.setCalendarEvents();
-}
+    this.upcomingTasks = this.upcomingTasks.filter(t => t !== task);
+
+    // refresh stats locally for instant feedback
+    this.calculateStats();
+    this.setCalendarEvents();
+  }
 }

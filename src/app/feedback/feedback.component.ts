@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './feedback.component.css'
 })
 export class FeedbackComponent {
+feedbackText: any;
+submitFeedback() {
+throw new Error('Method not implemented.');
+}
 
 }

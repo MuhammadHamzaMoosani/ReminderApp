@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth-service.service';
 import { Router } from '@angular/router';
+import { UserService } from '../Helpers/user-service.service';
 
 @Component({
   selector: 'app-login',
@@ -10,10 +11,8 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-onSubmit(_t6: NgForm) {
-throw new Error('Method not implemented.');
-}
-constructor(private auth:AuthService,private router:Router) {}
+
+constructor(private auth:AuthService,private router:Router,private userService: UserService) {}
 
 ngOnInit() {
   document.body.style.overflow = 'hidden';
@@ -22,10 +21,36 @@ ngOnInit() {
 ngOnDestroy() {
   document.body.style.overflow = '';
 }
-login()
-{
-  this.auth.login();
-  this.router.navigate(['/dashboard']);
 
+ loading = false;
+  error: string | null = null;
+toast = { message: '', type: 'success' as 'success' | 'error', visible: false };
+
+private showToast(message: string, type: 'success' | 'error') {
+  this.toast = { message, type, visible: true };
+  setTimeout(() => (this.toast.visible = false), 3000);
 }
+ 
+  onSubmit(form: NgForm) {
+    if (form.invalid) return;
+    this.loading = true;
+    this.error = null;
+
+
+    this.userService.login(form.value).subscribe({
+      next: (res: any) => {
+        this.auth.login(res.token);
+        this.showToast('✅ Login Successful!', 'success');
+
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        this.error = err.error?.error || 'Login failed';
+        this.showToast('❌ Login Failed!', 'error');
+
+        this.loading = false;
+      },
+      complete: () => (this.loading = false)
+    });
+  }
 }

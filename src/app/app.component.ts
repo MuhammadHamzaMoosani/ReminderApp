@@ -19,7 +19,12 @@ export class AppComponent implements OnInit {
   constructor(private themeService: ThemeServiceService) {}
 
   ngOnInit() {
-    AOS.init();
+      AOS.init({
+      duration: 800,   // animation speed
+      easing: 'ease-in-out',
+      once: false,     // 👈 allow re-animation when scrolling back
+      mirror: true     // 👈 animate out when scrolling past
+    });
 
     // Subscribe to theme changes
     this.themeService.theme$.subscribe(theme => {

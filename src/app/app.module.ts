@@ -17,6 +17,8 @@ import { LoginComponent } from './login/login.component';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';   // 👈 add this
+
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -31,6 +33,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ToastComponent } from './toast/toast.component';
+import { AuthInterceptor } from './auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +49,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     WorkspacesComponent,
     LoaderComponent,
     ProfileComponent,
-    CalenderComponent
+    CalenderComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +67,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    HttpClientModule   ,  // 👈 add this
     
     
     RouterModule.forRoot([
@@ -71,7 +77,7 @@ import { MatNativeDateModule } from '@angular/material/core';
       {path:"updates",component:UpdatesComponent},
       {path:"dashboard",component:DashboardComponent},
       {path:"tasks",component:TaskListComponent},
-      {path:"task-details",component:TaskDetailsComponent},
+      {path:"task-details/:id",component:TaskDetailsComponent},
       {path:"workspaces",component:WorkspacesComponent},
       {path:"profile",component:ProfileComponent},
       {path:"calendar",component:CalenderComponent}
@@ -79,7 +85,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 
     ])
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
