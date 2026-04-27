@@ -1,0 +1,36 @@
+<div class="p-6 text-white">
+  <h2 class="text-3xl font-bold mb-6 text-green-400">Add Task</h2>
+
+  <form class="space-y-4">
+    <input type="text" placeholder="Title" [(ngModel)]="task.title" name="title"
+      class="w-full p-3 rounded-xl bg-gray-900 text-white" />
+
+    <textarea placeholder="Description" [(ngModel)]="task.description" name="description"
+      class="w-full p-3 rounded-xl bg-gray-900 text-white"></textarea>
+
+    <input type="date" [(ngModel)]="task.dueDate" name="dueDate"
+      class="w-full p-3 rounded-xl bg-gray-900 text-white" />
+
+    <select [(ngModel)]="task.priority" name="priority"
+      class="w-full p-3 rounded-xl bg-gray-900 text-white">
+      <option value="low">Low Priority</option>
+      <option value="medium">Medium Priority</option>
+      <option value="high">High Priority</option>
+    </select>
+
+    <!-- Subtasks -->
+    <div class="bg-gray-800 p-4 rounded-xl">
+      <h3 class="font-bold mb-2">Subtasks</h3>
+      <div *ngFor="let sub of task.subtasks; let i = index" class="flex items-center mb-2">
+        <input type="text" [(ngModel)]="sub.title" name="subtask{{ i }}"
+          class="w-full p-2 rounded bg-gray-900 text-white mr-2" />
+        <button type="button" (click)="removeSubtask(i)" class="text-red-400">✖</button>
+      </div>
+      <button type="button" (click)="addSubtask()" class="text-green-400">+ Add Subtask</button>
+    </div>
+
+    <button type="submit" class="w-full bg-green-600 p-3 rounded-xl font-bold hover:bg-green-700">
+      Save Task
+    </button>
+  </form>
+</div>

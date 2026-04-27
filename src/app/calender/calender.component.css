@@ -1,0 +1,76 @@
+::ng-deep .fc-event.custom-event {
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.7rem;   /* smaller, readable */
+  line-height: 1.2;
+  color: white;
+  padding: 2px 4px;
+}
+
+.custom-event-container {
+  white-space: normal !important;  /* allow wrapping */
+  line-height: 1.2;
+}
+
+.custom-event-container .title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-event-container .time {
+  font-size: 0.75rem;
+  color: #9ca3af; /* Tailwind gray-400 */
+}
+::ng-deep .custom-event-container {
+  display: flex;
+  flex-direction: column; /* stack title + time */
+  align-items: flex-start;
+  padding: 2px 4px;
+  border-radius: 4px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+::ng-deep .custom-event-container .title {
+  font-weight: 600;
+  font-size: 11px; /* 👈 smaller for mini calendar */
+  color: #fff;
+}
+
+::ng-deep .custom-event-container .time {
+  font-size: 10px;
+  color: #d1d5db; /* Tailwind gray-300 */
+}
+
+
+
+/*  */
+::ng-deep .fc-daygrid-event-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  ::ng-deep .fc {
+    font-size: 12px;
+  }
+}
+@media (max-width: 480px) {
+  ::ng-deep .fc {
+    font-size: 10px;
+  }
+  
+}
+
+@media (max-width: 768px) {
+  ::ng-deep .fc-event {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+}

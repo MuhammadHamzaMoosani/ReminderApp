@@ -1,0 +1,137 @@
+<div class="p-6" [ngStyle]="{'color': 'var(--text-main)'}">
+  <h2 class="text-3xl font-bold mb-6" [ngStyle]="{'color': 'var(--accent)'}">Dashboard</h2>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="p-6 rounded-xl shadow-md"
+         [ngStyle]="{'background': 'var(--bg-secondary)'}">
+      <p [ngStyle]="{'color': 'var(--text-muted)'}">Tasks Due Today</p>
+      <h3 class="text-2xl font-bold" [ngStyle]="{'color': 'var(--accent)'}">{{ tasksDueToday }}</h3>
+    </div>
+    <div class="p-6 rounded-xl shadow-md"
+         [ngStyle]="{'background': 'var(--bg-secondary)'}">
+      <p [ngStyle]="{'color': 'var(--text-muted)'}">Overdue Tasks</p>
+      <h3 class="text-2xl font-bold" [ngStyle]="{'color': 'var(--danger)'}">{{ overdueTasks }}</h3>
+    </div>
+    <div class="p-6 rounded-xl shadow-md"
+         [ngStyle]="{'background': 'var(--bg-secondary)'}">
+      <p [ngStyle]="{'color': 'var(--text-muted)'}">Completed Tasks</p>
+      <h3 class="text-2xl font-bold" [ngStyle]="{'color': 'var(--info)'}">{{ completedTasks }}</h3>
+    </div>
+    <div class="p-6 rounded-xl shadow-md"
+         [ngStyle]="{'background': 'var(--bg-secondary)'}">
+      <p [ngStyle]="{'color': 'var(--text-muted)'}">Total Tasks</p>
+      <h3 class="text-2xl font-bold" [ngStyle]="{'color': 'var(--warning)'}">{{ totalTasks }}</h3>
+    </div>
+  </div>
+
+  <!-- Deadlines + Calendar -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <!-- Upcoming Deadlines -->
+    <div class="p-6 rounded-xl shadow-md"
+         [ngStyle]="{'background': 'var(--bg-secondary)'}">
+      <h3 class="text-lg font-semibold mb-4">Upcoming Deadlines</h3>
+      <ul>
+        <li *ngFor="let task of upcomingTasks"
+            [@fadeRemove]
+            class="py-2 border-b"
+            [ngStyle]="{'border-color': 'var(--bg-tertiary)'}">
+
+          <!-- Header row -->
+          <div class="flex justify-between items-center cursor-pointer hover:opacity-80"
+               (click)="toggleExpand(task)">
+            <div class="flex items-center gap-2">
+              <mat-icon class="text-sm transition-transform duration-300"
+                        [class.rotate-180]="expandedTask === task"
+                        [ngStyle]="{'color': 'var(--text-muted)'}">
+                expand_more
+              </mat-icon>
+              <span>{{ task.title }}</span>
+            </div>
+            <span class="text-sm" [ngStyle]="{'color': 'var(--text-muted)'}">
+              {{ task.deadline | date:'MMM d' }}
+            </span>
+          </div>
+
+          <!-- Expanded subtasks -->
+          <div [@expandCollapse]="expandedTask === task ? 'expanded' : 'collapsed'"
+               class="pl-8 mt-2">
+            <ul *ngIf="task.subtasks && task.subtasks.length>0"
+                class="ml-2 list-disc text-sm"
+                [ngStyle]="{'color': 'var(--text-muted)'}">
+              <li *ngFor="let sub of task.subtasks" class="flex items-center gap-2">
+                <input type="checkbox"
+                       [(ngModel)]="sub.completed"
+                       (change)="checkCompletion(task)"
+                       class="w-4 h-4"/>
+                <span [class.line-through]="sub.completed">{{ sub.title }}</span>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Calendar -->
+    <div class="p-6 rounded-xl shadow-md"
+         [ngStyle]="{'background': 'var(--bg-secondary)'}">
+      <h3 class="text-lg font-semibold mb-4">Calendar</h3>
+      <full-calendar [options]="calendarOptions"></full-calendar>
+      <button class="mt-3 hover:underline"
+              [ngStyle]="{'color': 'var(--info)'}"
+              routerLink="/calendar">
+        Open Full Calendar →
+      </button>
+    </div>
+  </div>
+
+  <!-- Finance -->
+  <div class="p-6 rounded-xl shadow-md mb-8"
+       [ngStyle]="{'background': 'var(--bg-secondary)'}">
+    <h3 class="text-lg font-semibold mb-4">Financial Snapshot</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <p [ngStyle]="{'color': 'var(--text-muted)'}">Income</p>
+        <p class="font-bold" [ngStyle]="{'color': 'var(--accent)'}">{{ totalIncome | currency }}</p>
+      </div>
+      <div>
+        <p [ngStyle]="{'color': 'var(--text-muted)'}">Expenses</p>
+        <p class="font-bold" [ngStyle]="{'color': 'var(--danger)'}">{{ totalExpenses | currency }}</p>
+      </div>
+      <div>
+        <p [ngStyle]="{'color': 'var(--text-muted)'}">Savings</p>
+        <p class="font-bold" [ngStyle]="{'color': 'var(--info)'}">{{ totalSavings | currency }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Details Modal -->
+  <div *ngIf="selectedTask"
+       class="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50"
+       [ngStyle]="{'color': 'var(--text-main)'}">
+    <div class="p-6 rounded-xl w-96"
+         [ngStyle]="{'background': 'var(--bg-secondary)'}">
+      <h2 class="text-xl font-bold mb-4" [ngStyle]="{'color': 'var(--accent)'}">
+        {{ selectedTask.title }}
+      </h2>
+      <p><span class="font-bold">Due:</span> {{ selectedTask.deadline | date:'MMM d, y' }}</p>
+      <p><span class="font-bold">Priority:</span> {{ selectedTask.priority || '—' }}</p>
+
+      <h3 class="font-semibold mt-3">Subtasks</h3>
+      <ul class="list-disc ml-5"
+          [ngStyle]="{'color': 'var(--text-muted)'}">
+        <li *ngFor="let sub of selectedTask.subtasks">
+          <span [class.line-through]="sub.completed">{{ sub.title }}</span>
+        </li>
+      </ul>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button (click)="selectedTask=null"
+                class="px-4 py-2 rounded hover:opacity-80"
+                [ngStyle]="{'background': 'var(--bg-tertiary)', 'color': 'var(--text-main)'}">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

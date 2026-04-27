@@ -1,0 +1,127 @@
+<!-- navbar.component.html -->
+<div
+ class="bg-gray-900 border-b border-gray-700 px-6 py-4 flex justify-between items-center sticky w-full top-0 z-50 text-white">
+  <div class="flex items-center gap-2 text-green-400 font-bold text-xl md:text-2xl">
+    ReminderApp
+    <img src="assets/navbar.png" alt="" class="w-10 h-10 md:w-15 md:h-15 object-contain" />
+  </div>
+  <div class="block md:hidden">
+    <button mat-icon-button (click)="toggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <div class="flex-row gap-10 hidden md:flex">
+      <ng-container *ngIf="!isLoggedIn; else loggedInLinks">
+    <a 
+  routerLink="/" 
+  routerLinkActive="text-green-400" 
+  [routerLinkActiveOptions]="{ exact: true }" 
+  class="hover:text-green-400 transition-colors"
+>Home</a>
+    <a 
+  routerLink="/feedback" 
+  routerLinkActive="text-green-400" 
+  class="hover:text-green-400 transition-colors"
+>
+  Feedback
+</a>
+<a 
+  routerLink="/updates" 
+  routerLinkActive="text-green-400" 
+  class="hover:text-green-400 transition-colors"
+>
+  Updates
+</a>
+<a 
+  routerLink="/login" 
+  routerLinkActive="text-green-400" 
+  class="hover:text-green-400 transition-colors"
+>
+  Login
+</a>
+</ng-container>
+
+    <!-- If logged in -->
+    <ng-template #loggedInLinks>
+      <a 
+        routerLink="/dashboard" 
+        routerLinkActive="text-green-400" 
+        class="hover:text-green-400 transition-colors"
+      >
+        Dashboard
+      </a>
+      <a 
+        routerLink="/tasks" 
+        routerLinkActive="text-green-400" 
+        class="hover:text-green-400 transition-colors"
+      >
+        Task List
+      </a>
+      <a 
+        routerLink="/updates" 
+        routerLinkActive="text-green-400" 
+        class="hover:text-green-400 transition-colors"
+      >
+        Updates
+      </a>
+      <a 
+        routerLink="/profile" 
+        routerLinkActive="text-green-400" 
+        class="hover:text-green-400 transition-colors"
+      >
+        Profile
+      </a>
+      <button (click)="logout()" class="hover:text-green-400 transition-colors">Logout</button>
+    </ng-template>
+  </div>
+</div>
+
+<mat-sidenav-container *ngIf="isSidenavVisible" class="md:hidden fixed top-0 left-0 w-full h-full z-40">
+  <mat-sidenav
+    mode="over"
+    opened
+    class="w-20!important p-4 bg-gray-900 text-white"
+    style="width: 180px;"
+
+    (closedStart)="closeSidenav()"
+  >
+  <ng-container *ngIf="!isLoggedIn; else loggedInLinks">
+    <a 
+  routerLink="/" 
+  routerLinkActive="text-green-400" 
+  [routerLinkActiveOptions]="{ exact: true }" 
+  class="hover:text-green-400 transition-colors"
+>Home</a>
+    <a 
+  routerLink="/feedback" 
+  routerLinkActive="text-green-400" 
+  class="hover:text-green-400 transition-colors"
+>
+  Feedback
+</a>
+<a 
+  routerLink="/updates" 
+  routerLinkActive="text-green-400" 
+  class="hover:text-green-400 transition-colors"
+>
+  Updates
+</a>
+<a 
+  routerLink="/login" 
+  routerLinkActive="text-green-400" 
+  class="hover:text-green-400 transition-colors"
+>
+  Login
+</a>
+ <ng-template #loggedInMobileLinks>
+      <a routerLink="/dashboard" (click)="closeSidenav()" routerLinkActive="text-green-400" class="block mb-4 hover:text-green-400">Dashboard</a>
+      <a routerLink="/tasks" (click)="closeSidenav()" routerLinkActive="text-green-400" class="block mb-4 hover:text-green-400">Task List</a>
+      <a routerLink="/updates" (click)="closeSidenav()" routerLinkActive="text-green-400" class="block mb-4 hover:text-green-400">Updates</a>
+      <a routerLink="/profile" (click)="closeSidenav()" routerLinkActive="text-green-400" class="block hover:text-green-400">Profile</a>
+    </ng-template>
+</ng-container>
+  </mat-sidenav>
+  <mat-sidenav-content class="bg-black bg-opacity-50">
+    <!-- Empty content to create an overlay effect -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

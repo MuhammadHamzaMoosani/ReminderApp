@@ -1,0 +1,25 @@
+<div class="px-8 py-12 flex justify-center">
+  <div class="w-full md:w-2/3 lg:w-1/2 p-8 rounded-xl shadow-lg"
+       [ngStyle]="{'background': 'var(--bg-secondary)', 'color': 'var(--text-main)'}"
+       data-aos="fade-up">
+    
+    <h2 class="text-2xl font-bold mb-6" [ngStyle]="{'color': 'var(--accent)'}">
+      We value your feedback 💬
+    </h2>
+
+    <form (ngSubmit)="submitFeedback()" class="space-y-4">
+      <textarea [(ngModel)]="feedbackText" name="feedback"
+                placeholder="Share your thoughts..."
+                class="w-full p-4 rounded-lg resize-none"
+                rows="5"
+                [ngStyle]="{'background': 'var(--bg-input)', 'color': 'var(--text-main)'}">
+      </textarea>
+
+      <button type="submit"
+              class="px-6 py-3 rounded-lg font-bold transition-colors"
+              [ngStyle]="{'background': 'var(--accent)', 'color': 'var(--text-invert)'}">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,16 +1,37 @@
-# Environment variable files
+# --- Environment & Secrets ---
 .env
 .env.*
-
-# Keep example/template files in the repository
 !.env.example
 !.env.sample
 
-# Dependencies (This is the important one)
+# --- Dependencies ---
 node_modules/
+/node_modules
+npm-debug.log
+yarn-error.log
 
-# Build folders
+# --- Build & Output ---
 bin/
 obj/
 dist/
 build/
+/tmp
+/out-tsc
+/bazel-out
+/.angular/cache
+
+# --- IDE & System ---
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+.history/*
+.DS_Store
+Thumbs.db
+
+# --- Misc ---
+/connect.lock
+/coverage
+*.log
